@@ -80,3 +80,88 @@ access on-chip peripherals and control/status registers.
 ```
 
 ---
+
+## Repository Structure
+
+```
+amba-ahb-apb-verif/
+├── README.md
+├── LICENSE
+├── .gitignore
+├── Makefile                          # top-level: make sim / make regress / make cov
+├── docs/
+│   ├── dut_spec.md                   # AHB fabric + AHB-APB bridge spec assumed
+│   ├── verification_plan.md          # feature list, coverage model, bug log
+│   ├── testplan_to_coverage_map.md   # traceability: testplan item -> covergroup/bin
+│   └── env_architecture.md           # agent/env block diagram + config knobs
+│
+├── rtl/
+│   └── dut/
+│       ├── ahb_arbiter.sv            # round-robin / priority arbiter
+│       ├── ahb_decoder.sv            # address decode to slave select
+│       ├── ahb_to_apb_bridge.sv
+│       └── apb_peripheral_stub.sv    # generic APB slave for bridge-side testing
+│
+├── verif/
+│   ├── uvm/
+│   │   ├── agents/
+│   │   │   ├── ahb_master_agent/
+│   │   │   │   ├── ahb_master_driver.sv
+│   │   │   │   ├── ahb_master_monitor.sv
+│   │   │   │   ├── ahb_master_sequencer.sv
+│   │   │   │   └── ahb_master_item.sv
+│   │   │   ├── ahb_slave_agent/
+│   │   │   │   ├── ahb_slave_driver.sv       # models memory + SPLIT/RETRY/error injection
+│   │   │   │   └── ahb_slave_monitor.sv
+│   │   │   └── apb_agent/
+│   │   │       └── apb_monitor.sv            # passive: checks bridge-generated APB txns
+│   │   ├── env/
+│   │   │   ├── ahb_apb_env.sv
+│   │   │   ├── ahb_apb_env_config.sv
+│   │   │   ├── ahb_apb_virtual_sequencer.sv
+│   │   │   ├── arbiter_ref_model.sv          # predicts expected grant order
+│   │   │   ├── bridge_ref_model.sv           # predicts expected AHB->APB mapping
+│   │   │   ├── ahb_apb_scoreboard.sv
+│   │   │   └── ahb_apb_coverage.sv
+│   │   ├── sequences/
+│   │   │   ├── virtual_seq/
+│   │   │   │   ├── base_vseq.sv
+│   │   │   │   ├── multi_master_contention_vseq.sv
+│   │   │   │   ├── burst_sweep_vseq.sv        # INCR/WRAP x 4/8/16 sweep
+│   │   │   │   ├── split_retry_vseq.sv
+│   │   │   │   └── error_injection_vseq.sv    # HRESP/PSLVERR error paths
+│   │   │   └── master_seq/
+│   │   │       └── ahb_master_seq_lib.sv
+│   │   └── tests/
+│   │       ├── ahb_apb_base_test.sv
+│   │       ├── smoke_test.sv
+│   │       ├── arbitration_fairness_test.sv
+│   │       ├── burst_sweep_test.sv
+│   │       ├── split_retry_test.sv
+│   │       ├── error_propagation_test.sv
+│   │       └── regression_test_list.f
+│   └── sva/
+│       ├── ahb_protocol_assertions.sv        # HTRANS/HBURST/HSIZE legality, HREADY rules
+│       ├── apb_protocol_assertions.sv        # SETUP->ACCESS phase legality
+│       └── bridge_assertions.sv              # bridge wait-state + error propagation
+│
+├── sim/
+│   ├── questasim/
+│   │   └── run_uvm.do
+│   └── vcs/
+│       └── run.sh
+│
+├── regression/
+│   ├── run_regression.py             # runs full test_list.f, seeds swept
+│   ├── coverage_merge.py
+│   └── report_gen.py                 # HTML pass/fail + coverage report
+│
+├── scripts/
+│   └── waveform_gen.sh
+│
+└── .github/
+    └── workflows/
+        └── ci.yml                    # lint + smoke regression on push
+```
+
+---
