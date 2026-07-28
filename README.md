@@ -111,25 +111,25 @@ amba-ahb-apb-verif/
 │   │   │   │   ├── ahb_master_sequencer.sv
 │   │   │   │   └── ahb_master_item.sv
 │   │   │   ├── ahb_slave_agent/
-│   │   │   │   ├── ahb_slave_driver.sv       # models memory + SPLIT/RETRY/error injection
+│   │   │   │   ├── ahb_slave_driver.sv       
 │   │   │   │   └── ahb_slave_monitor.sv
 │   │   │   └── apb_agent/
-│   │   │       └── apb_monitor.sv            # passive: checks bridge-generated APB txns
+│   │   │       └── apb_monitor.sv            
 │   │   ├── env/
 │   │   │   ├── ahb_apb_env.sv
 │   │   │   ├── ahb_apb_env_config.sv
 │   │   │   ├── ahb_apb_virtual_sequencer.sv
-│   │   │   ├── arbiter_ref_model.sv          # predicts expected grant order
-│   │   │   ├── bridge_ref_model.sv           # predicts expected AHB->APB mapping
+│   │   │   ├── arbiter_ref_model.sv         
+│   │   │   ├── bridge_ref_model.sv          
 │   │   │   ├── ahb_apb_scoreboard.sv
 │   │   │   └── ahb_apb_coverage.sv
 │   │   ├── sequences/
 │   │   │   ├── virtual_seq/
 │   │   │   │   ├── base_vseq.sv
 │   │   │   │   ├── multi_master_contention_vseq.sv
-│   │   │   │   ├── burst_sweep_vseq.sv        # INCR/WRAP x 4/8/16 sweep
+│   │   │   │   ├── burst_sweep_vseq.sv       
 │   │   │   │   ├── split_retry_vseq.sv
-│   │   │   │   └── error_injection_vseq.sv    # HRESP/PSLVERR error paths
+│   │   │   │   └── error_injection_vseq.sv
 │   │   │   └── master_seq/
 │   │   │       └── ahb_master_seq_lib.sv
 │   │   └── tests/
