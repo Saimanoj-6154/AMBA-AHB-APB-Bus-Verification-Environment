@@ -141,9 +141,9 @@ amba-ahb-apb-verif/
 │   │       ├── error_propagation_test.sv
 │   │       └── regression_test_list.f
 │   └── sva/
-│       ├── ahb_protocol_assertions.sv        # HTRANS/HBURST/HSIZE legality, HREADY rules
-│       ├── apb_protocol_assertions.sv        # SETUP->ACCESS phase legality
-│       └── bridge_assertions.sv              # bridge wait-state + error propagation
+│       ├── ahb_protocol_assertions.sv        
+│       ├── apb_protocol_assertions.sv        
+│       └── bridge_assertions.sv              
 │
 ├── sim/
 │   ├── questasim/
@@ -152,16 +152,12 @@ amba-ahb-apb-verif/
 │       └── run.sh
 │
 ├── regression/
-│   ├── run_regression.py             # runs full test_list.f, seeds swept
+│   ├── run_regression.py             
 │   ├── coverage_merge.py
-│   └── report_gen.py                 # HTML pass/fail + coverage report
+│   └── report_gen.py                 
 │
 ├── scripts/
 │   └── waveform_gen.sh
-│
-└── .github/
-    └── workflows/
-        └── ci.yml                    # lint + smoke regression on push
 ```
 
 ---
