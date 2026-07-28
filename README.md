@@ -33,3 +33,50 @@ access on-chip peripherals and control/status registers.
   while HREADY is low, HTRANS/HBURST/HSIZE combinations stay legal
   throughout a burst, APB PENABLE always follows exactly one PSETUP
   cycle, grant never changes mid-burst without a legal split
+
+
+
+## Verification Environment Architecture
+
+```
+                        ┌──────────────────────┐
+                        │   Test (uvm_test)     │  selects sequence(s),
+                        │                        │  configures env
+                        └───────────┬───────────┘
+                                    ▼
+                        ┌──────────────────────┐
+                        │  Virtual Sequencer    │
+                        └───────────┬───────────┘
+                                    ▼
+     ┌──────────────────────────────Env──────────────────────────────┐
+     │  ┌─────────────────┐  ┌─────────────────┐                     │
+     │  │ ahb_master_agent │  │ ahb_master_agent │  ...  (N masters)  │
+     │  │ (driver/mon/seqr)│  │ (driver/mon/seqr)│                    │
+     │  └────────┬────────┘  └────────┬────────┘                     │
+     │           └──────────┬─────────┘                              │
+     │                      ▼                                        │
+     │           ┌─────────────────────┐                             │
+     │           │  ahb_slave_agent(s)  │  memory/peripheral targets  │
+     │           └──────────┬──────────┘                             │
+     │                      ▼                                        │
+     │           ┌─────────────────────┐                             │
+     │           │  apb_agent (passive) │  monitors bridge -> APB     │
+     │           │  per peripheral      │  slave transactions         │
+     │           └──────────┬──────────┘                             │
+     │                      ▼                                        │
+     │           ┌─────────────────────┐                             │
+     │           │  Reference Model     │  predicts grant order +     │
+     │           │                      │  AHB<->APB txn mapping      │
+     │           └──────────┬──────────┘                             │
+     │                      ▼                                        │
+     │           ┌─────────────────────┐                             │
+     │           │    Scoreboard        │                            │
+     │           └──────────┬──────────┘                             │
+     │                      ▼                                        │
+     │           ┌─────────────────────┐                             │
+     │           │ Coverage Collector   │                            │
+     │           └─────────────────────┘                             │
+     └──────────────────────────────────────────────────────────────┘
+```
+
+---
