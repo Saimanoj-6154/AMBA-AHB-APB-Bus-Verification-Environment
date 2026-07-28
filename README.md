@@ -88,19 +88,19 @@ amba-ahb-apb-verif/
 ├── README.md
 ├── LICENSE
 ├── .gitignore
-├── Makefile                          # top-level: make sim / make regress / make cov
+├── Makefile                          
 ├── docs/
-│   ├── dut_spec.md                   # AHB fabric + AHB-APB bridge spec assumed
-│   ├── verification_plan.md          # feature list, coverage model, bug log
-│   ├── testplan_to_coverage_map.md   # traceability: testplan item -> covergroup/bin
-│   └── env_architecture.md           # agent/env block diagram + config knobs
+│   ├── dut_spec.md                   
+│   ├── verification_plan.md          
+│   ├── testplan_to_coverage_map.md   
+│   └── env_architecture.md           
 │
 ├── rtl/
 │   └── dut/
-│       ├── ahb_arbiter.sv            # round-robin / priority arbiter
-│       ├── ahb_decoder.sv            # address decode to slave select
+│       ├── ahb_arbiter.sv            
+│       ├── ahb_decoder.sv            
 │       ├── ahb_to_apb_bridge.sv
-│       └── apb_peripheral_stub.sv    # generic APB slave for bridge-side testing
+│       └── apb_peripheral_stub.sv    
 │
 ├── verif/
 │   ├── uvm/
