@@ -168,3 +168,21 @@ amba-ahb-apb-verif/
 - Python 3.10+ (regression runner, coverage/report scripts)
 - GTKWave or simulator-native waveform viewer for debug
 
+## Verification Approach
+
+- **Multi-master concurrent stimulus**: independent per-master agents
+  issue overlapping requests so arbitration is exercised under genuine
+  contention, not single-master isolation.
+- **Directed protocol-corner sequences**: burst-type sweeps across all
+  legal INCR/WRAP combinations, SPLIT/RETRY response sequences, and
+  HRESP/PSLVERR error injection at both the AHB and APB layers.
+- **Functional coverage**: burst-type × master-ID cross coverage,
+  arbitration grant sequences under contention, SPLIT/RETRY occurrence,
+  APB error propagation paths, back-to-back grant patterns.
+- **Assertions (SVA)**: structural protocol invariants — legal
+  HTRANS/HBURST/HSIZE combinations throughout a burst, no address
+  phase advance while HREADY is low, exactly one PSETUP cycle before
+  each PENABLE, grant stability for the duration of a burst.
+- **Regression discipline**: every test runs with multiple random
+  seeds in CI; coverage merged and reported against the testplan on
+  every run.
